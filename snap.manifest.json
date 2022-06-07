@@ -1,24 +1,24 @@
 {
   "version": "0.7.0",
-  "proposedName": "MetaMask Template Snap",
-  "description": "A MetaMask Snap template.",
+  "proposedName": "MetaMask Manage Accounts Snap",
+  "description": "A MetaMask Snap template for managing accounts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MetaMask/snap-template.git"
+    "url": "https://github.com/LavaMoat/snap-test-manage-accounts.git"
   },
   "source": {
-    "shasum": "ugRI+2ippw2w2gNSGWpvCRu5L1LD2j4FWQ+KcO/1dIE=",
+    "shasum": "mChBzS+6itiL3RwFVkk2C8GKWPuQ2ZKTX9lSb8kph+o=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
         "iconPath": "images/icon.svg",
-        "packageName": "@metamask/template-snap",
+        "packageName": "@lavamoat/snap-test-manage-accounts",
         "registry": "https://registry.npmjs.org/"
       }
     }
   },
   "initialPermissions": {
-    "snap_confirm": {}
+    "snap_manageAccounts": {}
   },
   "manifestVersion": "0.1"
 }

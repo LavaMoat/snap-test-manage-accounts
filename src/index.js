@@ -1,17 +1,11 @@
 wallet.registerRpcMessageHandler(async (originString, requestObject) => {
+  //console.log("Snap function handler got originString", originString);
+
   switch (requestObject.method) {
-    case 'hello':
+    case 'manageAccounts':
       return wallet.request({
-        method: 'snap_confirm',
-        params: [
-          {
-            prompt: `Hello, ${originString}!`,
-            description:
-              'This custom confirmation is just for display purposes.',
-            textAreaContent:
-              'But you can edit the snap source code to make it do something, if you want to!',
-          },
-        ],
+        method: 'snap_manageAccounts',
+        params: requestObject.params,
       });
     default:
       throw new Error('Method not found.');

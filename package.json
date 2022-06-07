@@ -1,10 +1,10 @@
 {
-  "name": "@metamask/template-snap",
+  "name": "@lavamoat/snap-test-manage-accounts",
   "version": "0.7.0",
-  "description": "The 'Hello, world!' of MetaMask Snaps.",
+  "description": "Snap for testing the snap_manageAccounts permission.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MetaMask/snap-template.git"
+    "url": "https://github.com/LavaMoat/snap-test-manage-accounts.git"
   },
   "license": "MIT",
   "main": "src/index.js",

@@ -1,41 +1,24 @@
 <!doctype html>
 <html>
   </head>
-    <title>Hello, Snaps!</title>
+    <title>Hello, Accounts!</title>
     <link rel="icon" type="image/svg" href="./images/icon.svg"/>
   </head>
 
   <body>
-    <h1>Hello, Snaps!</h1>
-    <details>
-      <summary>Instructions</summary>
-      <ul>
-        <li>First, click "Connect". Then, try out the other buttons!</li>
-        <li>Please note that:</li>
-        <ul>
-          <li>
-            The <code>snap.manifest.json</code> and <code>package.json</code> must be located in the server root directory..
-          </li>
-          <li>
-            The Snap bundle must be hosted at the location specified by the <code>location</code> field of <code>snap.manifest.json</code>.
-          </li>
-        </ul>
-      </ul>
-    </details>
-    <br/>
-
+    <h1>Hello, Accounts!</h1>
     <button class="connect">Connect</button>
-    <button class="sendHello">Send Hello</button>
+    <button class="addAccount">Add account</button>
   </body>
 
   <script>
-    const snapId = `local:${window.location.href}`;
+    const snapId = `local:${location.href}`;
 
     const connectButton = document.querySelector('button.connect')
-    const sendButton = document.querySelector('button.sendHello')
+    const addAccountButton = document.querySelector('button.addAccount')
 
     connectButton.addEventListener('click', connect)
-    sendButton.addEventListener('click', send)
+    addAccountButton.addEventListener('click', addAccount)
 
     // here we get permissions to interact with and install the snap
     async function connect () {
@@ -47,15 +30,22 @@
       })
     }
 
-    // here we call the snap's "hello" method
-    async function send () {
+    // here we call the snap's "manageAccounts" method
+    async function addAccount () {
       try {
+        const account = [
+          "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef",
+          { value: 'Secret data' }
+        ];
+
         const response = await ethereum.request({
           method: 'wallet_invokeSnap',
           params: [snapId, {
-            method: 'hello'
+            method: 'manageAccounts',
+            params: ["create", account]
           }]
         })
+        console.log("Account added");
       } catch (err) {
         console.error(err)
         alert('Problem happened: ' + err.message || err)
