@@ -8,17 +8,33 @@
   <body>
     <h1>Hello, Accounts!</h1>
     <button class="connect">Connect</button>
-    <button class="addAccount">Add account</button>
+    <button class="createAccount">Create account</button>
+    <button class="readAccount">Read account</button>
+    <button class="updateAccount">Update account</button>
+    <button class="deleteAccount">Delete account</button>
   </body>
 
   <script>
     const snapId = `local:${location.href}`;
 
-    const connectButton = document.querySelector('button.connect')
-    const addAccountButton = document.querySelector('button.addAccount')
+    const publicKey = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef";
+
+    const connectButton =
+      document.querySelector('button.connect');
+    const createAccountButton =
+      document.querySelector('button.createAccount');
+    const readAccountButton =
+      document.querySelector('button.readAccount');
+    const updateAccountButton =
+      document.querySelector('button.updateAccount');
+    const deleteAccountButton =
+      document.querySelector('button.deleteAccount');
 
     connectButton.addEventListener('click', connect)
-    addAccountButton.addEventListener('click', addAccount)
+    createAccountButton.addEventListener('click', createAccount)
+    readAccountButton.addEventListener('click', readAccount)
+    updateAccountButton.addEventListener('click', () => updateAccount({value: "new updated value"}))
+    deleteAccountButton.addEventListener('click', deleteAccount)
 
     // here we get permissions to interact with and install the snap
     async function connect () {
@@ -30,14 +46,9 @@
       })
     }
 
-    // here we call the snap's "manageAccounts" method
-    async function addAccount () {
+    async function createAccount () {
       try {
-        const account = [
-          "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef",
-          { value: 'Secret data' }
-        ];
-
+        const account = [ publicKey, { value: 'Secret data' } ];
         const response = await ethereum.request({
           method: 'wallet_invokeSnap',
           params: [snapId, {
@@ -45,7 +56,57 @@
             params: ["create", account]
           }]
         })
-        console.log("Account added");
+        console.log("Account created", response);
+      } catch (err) {
+        console.error(err)
+        alert('Problem happened: ' + err.message || err)
+      }
+    }
+
+    async function readAccount () {
+      try {
+        const response = await ethereum.request({
+          method: 'wallet_invokeSnap',
+          params: [snapId, {
+            method: 'manageAccounts',
+            params: ["read", publicKey]
+          }]
+        })
+        console.log("Account read", response);
+      } catch (err) {
+        console.error(err)
+        alert('Problem happened: ' + err.message || err)
+      }
+    }
+
+    async function updateAccount (privateData) {
+      try {
+        const account = [ publicKey, privateData ];
+
+        const response = await ethereum.request({
+          method: 'wallet_invokeSnap',
+          params: [snapId, {
+            method: 'manageAccounts',
+            params: ["update", account]
+          }]
+        })
+        console.log("Account updated", response);
+      } catch (err) {
+        console.error(err)
+        alert('Problem happened: ' + err.message || err)
+      }
+    }
+
+    async function deleteAccount () {
+      try {
+        const response = await ethereum.request({
+          method: 'wallet_invokeSnap',
+          params: [snapId, {
+            method: 'manageAccounts',
+            params: ["delete", publicKey]
+          }]
+        })
+        console.log("Account delete", response);
       } catch (err) {
         console.error(err)
         alert('Problem happened: ' + err.message || err)
