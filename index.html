@@ -1,23 +1,43 @@
 <!doctype html>
 <html>
   </head>
-    <title>Hello, Accounts!</title>
+    <title>Snap Accounts Manager</title>
     <link rel="icon" type="image/svg" href="./images/icon.svg"/>
   </head>
 
   <body>
-    <h1>Hello, Accounts!</h1>
-    <button class="connect">Connect</button>
-    <button class="createAccount">Create account</button>
-    <button class="readAccount">Read account</button>
-    <button class="updateAccount">Update account</button>
-    <button class="deleteAccount">Delete account</button>
+    <h1>Snap Accounts Manager</h1>
+    <div>
+      <button class="connect">Connect</button>
+    </div>
+
+    <hr>
+
+    <h2>Operations</h2>
+    <div>
+      <p id="publicAddress"></p>
+      <button class="createAccount">Create account</button>
+      <button class="readAccount">Read account</button>
+      <button class="updateAccount">Update account</button>
+      <button class="deleteAccount">Delete account</button>
+    </div>
+
+    <hr>
+
+    <h2>Errors</h2>
+    <div>
+      <button class="badCreateAccount">Create account with bad public key</button>
+    </div>
   </body>
 
   <script>
     const snapId = `local:${location.href}`;
 
+    const badPublicKey = "ff";
+    const publicAddress = "0x77ac616693b24c0c49cb148dbcb3fac8ccf0c96c";
     const publicKey = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef";
+
+    document.getElementById("publicAddress").innerText = publicAddress;
 
     const connectButton =
       document.querySelector('button.connect');
@@ -30,11 +50,16 @@
     const deleteAccountButton =
       document.querySelector('button.deleteAccount');
 
+    const badCreateAccountButton =
+      document.querySelector('button.badCreateAccount');
+
     connectButton.addEventListener('click', connect)
-    createAccountButton.addEventListener('click', createAccount)
+    createAccountButton.addEventListener('click', () => createAccount(publicKey))
     readAccountButton.addEventListener('click', readAccount)
     updateAccountButton.addEventListener('click', () => updateAccount({value: "new updated value"}))
     deleteAccountButton.addEventListener('click', deleteAccount)
+
+    badCreateAccountButton.addEventListener('click', () => createAccount(badPublicKey))
 
     // here we get permissions to interact with and install the snap
     async function connect () {
@@ -46,7 +71,7 @@
       })
     }
 
-    async function createAccount () {
+    async function createAccount (publicKey) {
       try {
         const account = [ publicKey, { value: 'Secret data' } ];
         const response = await ethereum.request({
@@ -112,5 +137,6 @@
         alert('Problem happened: ' + err.message || err)
       }
     }
+
   </script>
 </html>
